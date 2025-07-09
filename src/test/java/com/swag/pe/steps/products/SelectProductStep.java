@@ -9,10 +9,8 @@ public class SelectProductStep extends SelectProductPage {
     @Step("Agregar productos al carrito de compras")
     public void addProducts(int quantity){
         for (int i = 0; i < quantity; i++) {
-            if (i < products.size()) {
-                Actions act = new Actions(getDriver());
-                act.click(products.get(i)).perform();
-            }
+            Actions act = new Actions(getDriver());
+            act.click(products.get(i)).perform();
         }
     }
 
