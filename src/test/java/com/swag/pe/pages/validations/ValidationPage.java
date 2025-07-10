@@ -16,4 +16,7 @@ public class ValidationPage extends PageObject {
 
     @FindBy(xpath = "//div[@class='inventory_item_name']")
     protected List<WebElementFacade> productsList;
+
+    @FindBy(xpath = "//h2[text()='THANK YOU FOR YOUR ORDER']")
+    protected WebElementFacade lbl_order;
 }

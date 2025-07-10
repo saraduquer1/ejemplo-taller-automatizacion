@@ -25,4 +25,19 @@ public class ValidationStep extends ValidationPage {
         }
         return false;
     }
+
+    @Step("Validar que el carrito esta vacio de productos")
+    public Boolean shoppingCartIsEmpty(){
+        for (WebElementFacade product : productsList) {
+            if (!product.isDisplayed()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Step("Validar finalizacion de orden")
+    public Boolean orderTextIsDisplayed() {
+        return lbl_order.isDisplayed();
+    }
 }
