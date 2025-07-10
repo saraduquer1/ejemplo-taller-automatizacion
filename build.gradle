@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    serenityVersion = '4.2.34'
+    junitVersion = '5.10.1'
+    slf4jVersion = '2.0.7'
+}
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-junit5:${serenityVersion}"
+    
+    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
+}
+
+test {
+    useJUnitPlatform()
+    include '**/Runner*.class'
+    systemProperty 'file.encoding', 'UTF-8'
+    
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+    
+    finalizedBy aggregate
+}
+
+serenity {
+    reports = ["single-page-html"]
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Task to run specific test suites
+task runTests(type: Test) {
+    useJUnitPlatform()
+    include '**/Runner*.class'
+    systemProperty 'file.encoding', 'UTF-8'
+    finalizedBy aggregate
+}
+
+// Task to run only login tests
+task runLoginTests(type: Test) {
+    useJUnitPlatform()
+    include '**/Runner*.class'
+    systemProperty 'cucumber.filter.tags', '@Login'
+    finalizedBy aggregate
+}
+
+// Task to run only shopping cart tests
+task runShoppingTests(type: Test) {
+    useJUnitPlatform()
+    include '**/Runner*.class'
+    systemProperty 'cucumber.filter.tags', '@ShoppingCart'
+    finalizedBy aggregate
+}
